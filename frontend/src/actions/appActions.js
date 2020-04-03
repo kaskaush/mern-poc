@@ -1,5 +1,5 @@
 export const toggleAddTodo = () => {
-    return {
-        type: 'TOGGLE_ADD_TODO'
-    }
-}
+  return {
+    type: "TOGGLE_ADD_TODO"
+  };
+};

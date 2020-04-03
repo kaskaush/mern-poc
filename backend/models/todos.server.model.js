@@ -1,12 +1,12 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 var Schema = mongoose.Schema({
-    createdAt: {
-        type: Date,
-        default: Date.now
-    },
-    fullName: String,
-    todoText: String
+  createdAt: {
+    type: Date,
+    default: Date.now
+  },
+  fullName: String,
+  todoText: String
 });
 
-export default mongoose.model('Todo', Schema);
+export default mongoose.model("Todo", Schema);
