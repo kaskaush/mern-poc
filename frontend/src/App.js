@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import { Route, Switch } from "react-router-dom";
-import PropTypes from "prop-types";
 import Home from "./components/Home";
-import "./App.css";
 import Todos from "./components/Todos";
 import Todo from "./components/Todo";
 
@@ -19,10 +17,5 @@ class App extends Component {
     );
   }
 }
-
-App.propTypes = {
-  store: PropTypes.object.isRequired,
-  history: PropTypes.object.isRequired
-};
 
 export default App;

@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "This is the express server",
   "main": "index.js",
+  "homepage": ".",
   "scripts": {
     "start": "nodemon app_hooked.js",
     "test": "echo \"Error: no test specified\" && exit 1",

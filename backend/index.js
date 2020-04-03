@@ -28,15 +28,19 @@ app.use(
     extended: true
   })
 );
-app.use(express.static("../frontend/mern-frontend/build"));
+app.use(express.static(__dirname));
 console.log("dirnmae", __dirname);
 
 const port = process.env.PORT;
 
 mongoose.Promise = global.Promise;
 mongoose.connect(process.env.MONGODB_URL, {
-  useNewUrlParser: true
+  useNewUrlParser: true,
+  useUnifiedTopology: true
 });
+
+var db = mongoose.connection;
+db.on("error", console.error.bind(console, "MongoDB connection error:"));
 
 SourceMapSupport.install();
 

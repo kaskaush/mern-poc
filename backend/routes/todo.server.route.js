@@ -4,13 +4,13 @@ import * as todoController from "../controllers/todo.server.controller";
 const router = express.Router();
 
 router
-  .route("/")
+  .route("/todos")
   .get(todoController.getTodos)
   .post(todoController.addTodo)
   .put(todoController.updateTodo);
 
 router
-  .route("/:id")
+  .route("/todo/:id")
   .get(todoController.getTodo)
   .delete(todoController.deleteTodo);
 

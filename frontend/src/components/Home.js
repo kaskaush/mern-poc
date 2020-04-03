@@ -26,7 +26,7 @@ class Home extends Component {
   render() {
     return (
       <div>
-        <Navbar color="primary" inverse expand="md">
+        <Navbar color="dark" expand="md">
           <NavbarBrand href="/">Todo App</NavbarBrand>
           <NavbarToggler onClick={this.toggle} />
           <Collapse isOpen={this.state.isOpen} navbar>
