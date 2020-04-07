@@ -1,8 +1,7 @@
 import express from "express";
-import path from "path";
 import bodyParser from "body-parser";
 import logger from "morgan";
-import mongoose, { mongo } from "mongoose";
+import mongoose from "mongoose";
 import bb from "express-busboy";
 import todoRoutes from "./routes/todo.server.route";
 import SourceMapSupport from "source-map-support";
@@ -21,15 +20,8 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(logger("dev"));
-app.use(bodyParser.json());
-app.use(
-  bodyParser.urlencoded({
-    extended: true
-  })
-);
 app.use(express.static(__dirname));
-console.log("dirnmae", __dirname);
+app.use(logger("dev"));
 
 const port = process.env.PORT;
 
@@ -45,6 +37,14 @@ db.on("error", console.error.bind(console, "MongoDB connection error:"));
 SourceMapSupport.install();
 
 app.use("/api", todoRoutes);
+
+app.use(bodyParser.json({ type: "application/json" }));
+app.use(
+  bodyParser.urlencoded({
+    extended: true
+  })
+);
+
 app.get("/", (req, res) => {
   return res.send("API working");
 });

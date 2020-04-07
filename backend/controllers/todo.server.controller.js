@@ -1,102 +1,59 @@
-import mongoose from "mongoose";
 import Todo from "../models/todos.server.model";
 
-export const getTodos = (req, res) => {
-  Todo.find().exec((err, todos) => {
-    if (err) {
-      return res.json({
-        success: false,
-        message: "Some error"
-      });
-    }
-    res.json({
-      success: true,
-      message: "Todos fetched successfully",
-      todos
-    });
-  });
+export const getTodos = async (req, res) => {
+  const todos = await Todo.find({});
+  try {
+    res.status(200).send(todos);
+  } catch (err) {
+    res.status(400).send(err);
+  }
 };
 
-export const addTodo = (req, res) => {
+export const addTodo = async (req, res) => {
   const newTodo = new Todo(req.body);
-  newTodo.save((err, todo) => {
-    if (err) {
-      return res.json({
-        success: false,
-        message: "Some error"
-      });
-    }
-    return res.json({
-      success: true,
-      message: "Todo added successfully",
-      todo
+  await newTodo
+    .save()
+    .then(() => {
+      res.status(201).send(newTodo);
+    })
+    .catch(err => {
+      res.status(400).send(err);
     });
-  });
 };
 
-export const updateTodo = (req, res) => {
-  Todo.findAndUpdate(
-    {
-      _id: req.body.id
-    },
-    req.body,
-    {
-      new: true
-    },
-    (err, todo) => {
-      if (err) {
-        return res.json({
-          success: false,
-          message: "Some error",
-          error: err
-        });
+export const updateTodo = async (req, res) => {
+  try {
+    await Todo.findByIdAndUpdate(req.params.id, req.body);
+    await Todo.save();
+    res.status(204).send();
+  } catch (err) {
+    res.status(500).send(err);
+  }
+};
+
+export const getTodo = async (req, res) => {
+  await Todo.findById(req.params.id)
+    .then(todo => {
+      if (todo) {
+        res.status(200).send(todo);
+      } else {
+        res.status(404).send("No item found!");
       }
-      console.log(todo);
-      return res.json({
-        success: true,
-        message: "Updated successfully",
-        todo
-      });
-    }
-  );
-};
-
-export const getTodo = (req, res) => {
-  Todo.find({
-    _id: req.params.id
-  }).exec((err, todo) => {
-    if (err) {
-      return res.json({
-        success: false,
-        message: "Some error"
-      });
-    }
-    if (todo.length) {
-      return res.json({
-        success: true,
-        message: "Todo fetched by id successfully",
-        todo
-      });
-    } else {
-      return res.json({
-        success: false,
-        message: "Todo with the given id not found"
-      });
-    }
-  });
-};
-
-export const deleteTodo = (req, res) => {
-  Todo.findByIdAndRemove(req.params.id, (err, todo) => {
-    if (err) {
-      return res.json({
-        success: false,
-        message: "Some error"
-      });
-    }
-    return res.json({
-      success: true,
-      message: todo.todoText + "deleted successfully"
+    })
+    .catch(err => {
+      res.status(500).send(err);
     });
-  });
+};
+
+export const deleteTodo = async (req, res) => {
+  try {
+    const todo = await Todo.findByIdAndRemove(req.params.id);
+
+    if (!todo) {
+      res.status.status(404).send("Item not found!");
+    }
+    res.status(200).send();
+  } catch (err) {
+    res.status(500).send();
+  }
 };
