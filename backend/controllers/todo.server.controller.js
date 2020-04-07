@@ -1,7 +1,7 @@
-import Todo from "../models/todos.server.model";
+import todoModel from "../models/todo.mongo.model";
 
 export const getTodos = async (req, res) => {
-  const todos = await Todo.find({});
+  const todos = await todoModel.find({});
   try {
     res.status(200).send(todos);
   } catch (err) {
@@ -10,7 +10,7 @@ export const getTodos = async (req, res) => {
 };
 
 export const addTodo = async (req, res) => {
-  const newTodo = new Todo(req.body);
+  const newTodo = new todoModel(req.body);
   await newTodo
     .save()
     .then(() => {
@@ -23,8 +23,8 @@ export const addTodo = async (req, res) => {
 
 export const updateTodo = async (req, res) => {
   try {
-    await Todo.findByIdAndUpdate(req.params.id, req.body);
-    await Todo.save();
+    await todoModel.findByIdAndUpdate(req.params.id, req.body);
+    await todoModel.save();
     res.status(204).send();
   } catch (err) {
     res.status(500).send(err);
@@ -32,7 +32,8 @@ export const updateTodo = async (req, res) => {
 };
 
 export const getTodo = async (req, res) => {
-  await Todo.findById(req.params.id)
+  await todoModel
+    .findById(req.params.id)
     .then(todo => {
       if (todo) {
         res.status(200).send(todo);
@@ -47,7 +48,7 @@ export const getTodo = async (req, res) => {
 
 export const deleteTodo = async (req, res) => {
   try {
-    const todo = await Todo.findByIdAndRemove(req.params.id);
+    const todo = await todoModel.findByIdAndRemove(req.params.id);
 
     if (!todo) {
       res.status.status(404).send("Item not found!");

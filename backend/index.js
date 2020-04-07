@@ -45,10 +45,6 @@ app.use(
   })
 );
 
-app.get("/", (req, res) => {
-  return res.send("API working");
-});
-
 app.use((req, res, next) => {
   res.status(404).send("<h2>Page not found!</h2>");
 });
